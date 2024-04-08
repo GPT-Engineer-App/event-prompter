@@ -9,7 +9,7 @@ const API_URL = "http://localhost:1337/api";
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("kristian2");
   const [password, setPassword] = useState("");
   const [prompts, setPrompts] = useState([]);
   const [promptName, setPromptName] = useState("");
