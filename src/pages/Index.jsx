@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Box, Button, FormControl, FormLabel, Input, VStack, HStack, Text, Heading, useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 
 const API_URL = "http://localhost:1337/api";
 
@@ -246,7 +247,7 @@ const Index = () => {
 
   return (
     <Box p={4}>
-      <Heading mb={4}>Prompt Management</Heading>
+      <Navbar onLogout={logout} />
       <VStack spacing={4} align="stretch">
         <FormControl id="promptName">
           <FormLabel>Prompt Name</FormLabel>
@@ -284,9 +285,6 @@ const Index = () => {
           </Box>
         ))}
       </Box>
-      <Button mt={8} onClick={logout}>
-        Logout
-      </Button>
     </Box>
   );
 };
