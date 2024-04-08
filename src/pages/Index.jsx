@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, FormControl, FormLabel, Input, VStack, HStack, Text, Heading, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -255,7 +255,7 @@ const Index = () => {
         </FormControl>
         <FormControl id="promptText">
           <FormLabel>Prompt Text</FormLabel>
-          <Input type="text" value={promptText} onChange={(e) => setPromptText(e.target.value)} />
+          <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} />
         </FormControl>
         {editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}
       </VStack>
