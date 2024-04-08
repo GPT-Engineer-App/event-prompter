@@ -8,7 +8,7 @@ const API_URL = "http://localhost:1337/api";
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("kristian2@lovable.dev");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [prompts, setPrompts] = useState([]);
@@ -224,6 +224,10 @@ const Index = () => {
     return (
       <Box p={4}>
         <Heading mb={4}>Login</Heading>
+        <FormControl id="email" mb={4}>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </FormControl>
         <FormControl id="username" mb={4}>
           <FormLabel>Username</FormLabel>
           <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
