@@ -265,11 +265,12 @@ const Index = () => {
         </Heading>
         {prompts.map((prompt) => (
           <Box key={prompt.id} mb={4}>
-            <HStack>
+            <HStack spacing={4}>
               <Text fontWeight="bold">{prompt.attributes.name}:</Text>
-              <Text>{prompt.attributes.prompt}</Text>
+              <Text flex={1}>{prompt.attributes.prompt}</Text>
               <Button
                 size="sm"
+                variant="ghost"
                 onClick={() => {
                   setEditingPromptId(prompt.id);
                   setPromptName(prompt.attributes.name);
