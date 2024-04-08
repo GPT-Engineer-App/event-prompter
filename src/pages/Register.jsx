@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, FormControl, FormLabel, Input, Heading, useToast } from "@chakra-ui/react";
 
 const API_URL = "http://localhost:1337/api";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +28,7 @@ const Register = () => {
           duration: 3000,
           isClosable: true,
         });
+        navigate("/");
       } else {
         toast({
           title: "Registration failed",
