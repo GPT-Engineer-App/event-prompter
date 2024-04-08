@@ -255,7 +255,7 @@ const Index = () => {
         </FormControl>
         <FormControl id="promptText">
           <FormLabel>Prompt Text</FormLabel>
-          <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} />
+          <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} whiteSpace="pre-wrap" />
         </FormControl>
         {editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}
       </VStack>
@@ -270,7 +270,7 @@ const Index = () => {
                 <Heading size="md">{prompt.attributes.name}</Heading>
               </CardHeader>
               <CardBody>
-                <Text>{prompt.attributes.prompt}</Text>
+                <Text whiteSpace="pre-wrap">{prompt.attributes.prompt}</Text>
                 <HStack mt={4} justify="flex-end">
                   <Button
                     size="sm"
@@ -290,7 +290,7 @@ const Index = () => {
             </Card>
           ))}
         </VStack>
-        </Box>
+      </Box>
     </Box>
   );
 };
