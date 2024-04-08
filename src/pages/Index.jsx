@@ -12,8 +12,7 @@ const Index = () => {
   const [username, setUsername] = useState("kristian2");
   const [password, setPassword] = useState("");
   const [prompts, setPrompts] = useState([]);
-  const [promptName, setPromptName] = useState("");
-  const [promptText, setPromptText] = useState("");
+
   const [editingPromptId, setEditingPromptId] = useState(null);
   const toast = useToast();
 
@@ -108,61 +107,23 @@ const Index = () => {
     }
   };
 
-  const createPrompt = async () => {
+  const updatePrompt = async (promptId, updatedPrompt) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/prompts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ data: { name: promptName, prompt: promptText } }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPrompts([...prompts, data.data]);
-        setPromptName("");
-        setPromptText("");
-        toast({
-          title: "Prompt created",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else {
-        toast({
-          title: "Failed to create prompt",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      console.error("Error creating prompt:", error);
-    }
-  };
-
-  const updatePrompt = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/prompts/${editingPromptId}`, {
+      const response = await fetch(`${API_URL}/prompts/${promptId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ data: { name: promptName, prompt: promptText } }),
+        body: JSON.stringify({ data: updatedPrompt }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        const updatedPrompts = prompts.map((prompt) => (prompt.id === editingPromptId ? data.data : prompt));
+        const updatedPrompts = prompts.map((prompt) => (prompt.id === promptId ? data.data : prompt));
         setPrompts(updatedPrompts);
         setEditingPromptId(null);
-        setPromptName("");
-        setPromptText("");
         toast({
           title: "Prompt updated",
           status: "success",
@@ -248,17 +209,7 @@ const Index = () => {
   return (
     <Box p={4}>
       <Navbar onLogout={logout} />
-      <VStack spacing={4} align="stretch">
-        <FormControl id="promptName">
-          <FormLabel>Prompt Name</FormLabel>
-          <Input type="text" value={promptName} onChange={(e) => setPromptName(e.target.value)} />
-        </FormControl>
-        <FormControl id="promptText">
-          <FormLabel>Prompt Text</FormLabel>
-          <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} whiteSpace="pre-wrap" />
-        </FormControl>
-        {editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}
-      </VStack>
+      <VStack spacing={4} align="stretch"></VStack>
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
           <Heading size="md" mb={4}>
@@ -276,8 +227,6 @@ const Index = () => {
                     size="sm"
                     onClick={() => {
                       setEditingPromptId(prompt.id);
-                      setPromptName(prompt.attributes.name);
-                      setPromptText(prompt.attributes.prompt);
                     }}
                   >
                     <FaEdit />
