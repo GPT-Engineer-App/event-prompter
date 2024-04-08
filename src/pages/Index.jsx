@@ -267,14 +267,14 @@ const Index = () => {
           <Box key={prompt.id} mb={4}>
             <HStack spacing={4}>
               <Text fontWeight="bold">{prompt.attributes.name}:</Text>
-              <Text flex={1}>{prompt.attributes.prompt}</Text>
+              <Text flex={1}>{prompt.attributes.text}</Text>
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => {
                   setEditingPromptId(prompt.id);
                   setPromptName(prompt.attributes.name);
-                  setPromptText(prompt.attributes.prompt);
+                  setPromptText(prompt.attributes.text);
                 }}
               >
                 <FaEdit />
