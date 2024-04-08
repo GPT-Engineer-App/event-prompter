@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast, Card, CardHeader, CardBody } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -260,32 +260,37 @@ const Index = () => {
         {editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}
       </VStack>
       <Box mt={8}>
-        <Heading size="md" mb={4}>
-          Prompts
-        </Heading>
-        {prompts.map((prompt) => (
-          <Box key={prompt.id} mb={4}>
-            <HStack spacing={4}>
-              <Text fontWeight="bold">{prompt.attributes.name}:</Text>
-              <Text flex={1}>{prompt.attributes.prompt}</Text>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  setEditingPromptId(prompt.id);
-                  setPromptName(prompt.attributes.name);
-                  setPromptText(prompt.attributes.prompt);
-                }}
-              >
-                <FaEdit />
-              </Button>
-              <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
-                <FaTrash />
-              </Button>
-            </HStack>
-          </Box>
-        ))}
-      </Box>
+        <VStack spacing={4} align="stretch">
+          <Heading size="md" mb={4}>
+            Prompts
+          </Heading>
+          {prompts.map((prompt) => (
+            <Card key={prompt.id}>
+              <CardHeader>
+                <Heading size="md">{prompt.attributes.name}</Heading>
+              </CardHeader>
+              <CardBody>
+                <Text>{prompt.attributes.prompt}</Text>
+                <HStack mt={4} justify="flex-end">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setEditingPromptId(prompt.id);
+                      setPromptName(prompt.attributes.name);
+                      setPromptText(prompt.attributes.prompt);
+                    }}
+                  >
+                    <FaEdit />
+                  </Button>
+                  <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
+                    <FaTrash />
+                  </Button>
+                </HStack>
+              </CardBody>
+            </Card>
+          ))}
+        </VStack>
+        </Box>
     </Box>
   );
 };
