@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast, Card, CardHeader, CardBody } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast, Card, CardHeader, CardBody, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -125,6 +125,7 @@ const Index = () => {
         setPrompts([...prompts, data.data]);
         setPromptName("");
         setPromptText("");
+        closeModal();
         toast({
           title: "Prompt created",
           status: "success",
@@ -245,20 +246,42 @@ const Index = () => {
     );
   }
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Box p={4}>
       <Navbar onLogout={logout} />
-      <VStack spacing={4} align="stretch">
-        <FormControl id="promptName">
-          <FormLabel>Prompt Name</FormLabel>
-          <Input type="text" value={promptName} onChange={(e) => setPromptName(e.target.value)} />
-        </FormControl>
-        <FormControl id="promptText">
-          <FormLabel>Prompt Text</FormLabel>
-          <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} whiteSpace="pre-wrap" />
-        </FormControl>
-        {editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}
-      </VStack>
+      <Button onClick={openModal} mb={4}>
+        Create Prompt
+      </Button>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create Prompt</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4} align="stretch">
+              <FormControl id="promptName">
+                <FormLabel>Prompt Name</FormLabel>
+                <Input type="text" value={promptName} onChange={(e) => setPromptName(e.target.value)} />
+              </FormControl>
+              <FormControl id="promptText">
+                <FormLabel>Prompt Text</FormLabel>
+                <Textarea value={promptText} onChange={(e) => setPromptText(e.target.value)} whiteSpace="pre-wrap" />
+              </FormControl>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>{editingPromptId ? <Button onClick={updatePrompt}>Update Prompt</Button> : <Button onClick={createPrompt}>Create Prompt</Button>}</ModalFooter>
+        </ModalContent>
+      </Modal>
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
           <Heading size="md" mb={4}>
