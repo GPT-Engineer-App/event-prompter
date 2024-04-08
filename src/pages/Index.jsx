@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box, Button, FormControl, FormLabel, Input, VStack, HStack, Text, Heading, useToast } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 const API_URL = "http://localhost:1337/api";
@@ -235,7 +236,7 @@ const Index = () => {
         </Button>
         <Text>
           Don't have an account?{" "}
-          <Button variant="link" onClick={() => setIsLoggedIn(false)}>
+          <Button as={Link} to="/register" variant="link">
             Register
           </Button>
         </Text>
