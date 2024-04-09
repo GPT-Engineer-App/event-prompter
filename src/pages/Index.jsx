@@ -109,6 +109,40 @@ const Index = () => {
     }
   };
 
+  const createPrompt = async (newPrompt) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/prompts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ data: newPrompt }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPrompts([...prompts, data.data]);
+        toast({
+          title: "Prompt created",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Failed to create prompt",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error creating prompt:", error);
+    }
+  };
+
   const updatePrompt = async (promptId, updatedPrompt) => {
     try {
       const token = localStorage.getItem("token");
@@ -248,7 +282,7 @@ const Index = () => {
         isOpen={isCreatePromptOpen}
         onClose={onCreatePromptClose}
         onSubmit={(newPrompt) => {
-          console.log("Create prompt:", newPrompt);
+          createPrompt(newPrompt);
           onCreatePromptClose();
         }}
       />
