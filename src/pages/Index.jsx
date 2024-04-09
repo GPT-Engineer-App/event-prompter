@@ -36,7 +36,7 @@ const Index = () => {
         const data = await response.json();
         localStorage.setItem("token", data.jwt);
         setIsLoggedIn(true);
-        fetchPrompts(data.jwt);
+        fetchPrompts();
         toast({
           title: "Login successful",
           status: "success",
@@ -211,11 +211,9 @@ const Index = () => {
   return (
     <Box p={4}>
       <Navbar onLogout={logout} />
-      {isLoggedIn && (
-        <VStack spacing={4} align="stretch">
-          <Button onClick={onCreatePromptOpen}>Create Prompt</Button>
-        </VStack>
-      )}
+      <VStack spacing={4} align="stretch">
+        {isLoggedIn && <Button onClick={onCreatePromptOpen}>Create Prompt</Button>}
+      </VStack>
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
           <Heading size="md" mb={4}>
