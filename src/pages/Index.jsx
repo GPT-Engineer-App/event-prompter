@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast, Card, CardHeader, CardBody } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Textarea, VStack, HStack, Text, Heading, useToast, Card, CardHeader, CardBody, useDisclosure } from "@chakra-ui/react";
+import CreatePromptModal from "../components/CreatePromptModal";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -15,6 +16,7 @@ const Index = () => {
 
   const [editingPromptId, setEditingPromptId] = useState(null);
   const toast = useToast();
+  const { isOpen: isCreatePromptOpen, onOpen: onCreatePromptOpen, onClose: onCreatePromptClose } = useDisclosure();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -209,7 +211,9 @@ const Index = () => {
   return (
     <Box p={4}>
       <Navbar onLogout={logout} />
-      <VStack spacing={4} align="stretch"></VStack>
+      <VStack spacing={4} align="stretch">
+        <Button onClick={onCreatePromptOpen}>Create Prompt</Button>
+      </VStack>
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
           <Heading size="md" mb={4}>
@@ -240,6 +244,14 @@ const Index = () => {
           ))}
         </VStack>
       </Box>
+      <CreatePromptModal
+        isOpen={isCreatePromptOpen}
+        onClose={onCreatePromptClose}
+        onSubmit={(newPrompt) => {
+          console.log("Create prompt:", newPrompt);
+          onCreatePromptClose();
+        }}
+      />
     </Box>
   );
 };
