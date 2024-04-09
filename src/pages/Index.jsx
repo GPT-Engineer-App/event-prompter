@@ -112,7 +112,7 @@ const Index = () => {
   const updatePrompt = async (promptId, updatedPrompt) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/prompts/${promptId}`, {
+      const response = await fetch(`${API_URL}/${promptId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const Index = () => {
   const deletePrompt = async (promptId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/prompts/${promptId}`, {
+      const response = await fetch(`${API_URL}/${promptId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
