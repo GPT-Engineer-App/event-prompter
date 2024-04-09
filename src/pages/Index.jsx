@@ -19,11 +19,7 @@ const Index = () => {
   const { isOpen: isCreatePromptOpen, onOpen: onCreatePromptOpen, onClose: onCreatePromptClose } = useDisclosure();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-      fetchPrompts(token);
-    }
+    fetchPrompts();
   }, []);
 
   const login = async () => {
@@ -90,13 +86,11 @@ const Index = () => {
     }
   };
 
-  const fetchPrompts = async (token) => {
+  const fetchPrompts = async () => {
     try {
-      const response = await fetch(`${API_URL}/prompts`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const response = await fetch(`${API_URL}/prompts`, { headers });
 
       if (response.ok) {
         const data = await response.json();
@@ -211,9 +205,11 @@ const Index = () => {
   return (
     <Box p={4}>
       <Navbar onLogout={logout} />
-      <VStack spacing={4} align="stretch">
-        <Button onClick={onCreatePromptOpen}>Create Prompt</Button>
-      </VStack>
+      {isLoggedIn && (
+        <VStack spacing={4} align="stretch">
+          <Button onClick={onCreatePromptOpen}>Create Prompt</Button>
+        </VStack>
+      )}
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
           <Heading size="md" mb={4}>
@@ -226,19 +222,21 @@ const Index = () => {
               </CardHeader>
               <CardBody>
                 <Text whiteSpace="pre-wrap">{prompt.attributes.prompt}</Text>
-                <HStack mt={4} justify="flex-end">
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      setEditingPromptId(prompt.id);
-                    }}
-                  >
-                    <FaEdit />
-                  </Button>
-                  <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
-                    <FaTrash />
-                  </Button>
-                </HStack>
+                {isLoggedIn && (
+                  <HStack mt={4} justify="flex-end">
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setEditingPromptId(prompt.id);
+                      }}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
+                      <FaTrash />
+                    </Button>
+                  </HStack>
+                )}
               </CardBody>
             </Card>
           ))}
