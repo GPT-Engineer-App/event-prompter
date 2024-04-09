@@ -19,7 +19,11 @@ const Index = () => {
   const { isOpen: isCreatePromptOpen, onOpen: onCreatePromptOpen, onClose: onCreatePromptClose } = useDisclosure();
 
   useEffect(() => {
-    fetchPrompts();
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+      fetchPrompts(token);
+    }
   }, []);
 
   const login = async () => {
@@ -36,7 +40,7 @@ const Index = () => {
         const data = await response.json();
         localStorage.setItem("token", data.jwt);
         setIsLoggedIn(true);
-        fetchPrompts();
+        fetchPrompts(data.jwt);
         toast({
           title: "Login successful",
           status: "success",
@@ -86,11 +90,13 @@ const Index = () => {
     }
   };
 
-  const fetchPrompts = async () => {
+  const fetchPrompts = async (token) => {
     try {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const response = await fetch(`${API_URL}/prompts`, { headers });
+      const response = await fetch(`${API_URL}/prompts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -180,29 +186,23 @@ const Index = () => {
   if (!isLoggedIn) {
     return (
       <Box p={4}>
-        <Navbar />
-        <Box mt={8}>
-          <VStack spacing={4} align="stretch">
-            <Heading size="md" mb={4}>
-              Prompts
-            </Heading>
-            {prompts.map((prompt) => (
-              <Card key={prompt.id}>
-                <CardHeader>
-                  <Heading size="md">{prompt.attributes.name}</Heading>
-                </CardHeader>
-                <CardBody>
-                  <Text whiteSpace="pre-wrap">{prompt.attributes.prompt}</Text>
-                </CardBody>
-              </Card>
-            ))}
-          </VStack>
-        </Box>
-        <Text mt={4}>
-          <Button as={Link} to="/admin" variant="link">
-            Login
-          </Button>{" "}
-          to create and manage prompts.
+        <Heading mb={4}>Login</Heading>
+        <FormControl id="username" mb={4}>
+          <FormLabel>Username</FormLabel>
+          <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </FormControl>
+        <FormControl id="password" mb={4}>
+          <FormLabel>Password</FormLabel>
+          <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </FormControl>
+        <Button onClick={login} mb={4}>
+          Login
+        </Button>
+        <Text>
+          Don't have an account?{" "}
+          <Button as={Link} to="/register" variant="link">
+            Register
+          </Button>
         </Text>
       </Box>
     );
@@ -212,7 +212,7 @@ const Index = () => {
     <Box p={4}>
       <Navbar onLogout={logout} />
       <VStack spacing={4} align="stretch">
-        {isLoggedIn && <Button onClick={onCreatePromptOpen}>Create Prompt</Button>}
+        <Button onClick={onCreatePromptOpen}>Create Prompt</Button>
       </VStack>
       <Box mt={8}>
         <VStack spacing={4} align="stretch">
@@ -226,21 +226,19 @@ const Index = () => {
               </CardHeader>
               <CardBody>
                 <Text whiteSpace="pre-wrap">{prompt.attributes.prompt}</Text>
-                {isLoggedIn && (
-                  <HStack mt={4} justify="flex-end">
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        setEditingPromptId(prompt.id);
-                      }}
-                    >
-                      <FaEdit />
-                    </Button>
-                    <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
-                      <FaTrash />
-                    </Button>
-                  </HStack>
-                )}
+                <HStack mt={4} justify="flex-end">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setEditingPromptId(prompt.id);
+                    }}
+                  >
+                    <FaEdit />
+                  </Button>
+                  <Button size="sm" onClick={() => deletePrompt(prompt.id)}>
+                    <FaTrash />
+                  </Button>
+                </HStack>
               </CardBody>
             </Card>
           ))}

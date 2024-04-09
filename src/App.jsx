@@ -1,18 +1,15 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Index from "./pages/Index.jsx";
-import Admin from "./pages/Admin.jsx";
-import { AuthProvider } from "./components/AuthProvider";
+import Register from "./pages/Register.jsx";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<Index />} />
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Index />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 
