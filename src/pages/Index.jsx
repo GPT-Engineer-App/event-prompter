@@ -148,7 +148,7 @@ const Index = () => {
   const deletePrompt = async (promptId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/${promptId}`, {
+      const response = await fetch(`${API_URL}/prompts/${promptId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
