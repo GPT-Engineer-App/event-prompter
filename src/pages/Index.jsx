@@ -143,6 +143,13 @@ const Index = () => {
     }
   };
 
+  return (
+    <Box p={4}>
+      {}
+      <CreatePromptModal isOpen={isCreatePromptOpen} onClose={onCreatePromptClose} onSubmit={createPrompt} />
+    </Box>
+  );
+
   const updatePrompt = async (promptId, updatedPrompt) => {
     try {
       const token = localStorage.getItem("token");
