@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, Textarea, Button } from "@chakra-ui/react";
 
-const API_URL = "https://your-api-url.com/api";
+const API_URL = "http://localhost:1337/api";
 
 const CreatePromptModal = ({ isOpen, onClose, onSubmit }) => {
   const [name, setName] = useState("");
