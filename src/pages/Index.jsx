@@ -260,7 +260,20 @@ const Index = () => {
 
           if (response.ok) {
             const data = await response.json();
-            setPrompts([...prompts, data.data]);
+            setPrompts((prevPrompts) => [...prevPrompts, data.data]);
+            toast({
+              title: "Prompt created",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+          } else {
+            toast({
+              title: "Failed to create prompt",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
           }
           onCreatePromptClose();
         }}
