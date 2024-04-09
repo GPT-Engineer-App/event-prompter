@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, Textarea, Button } from "@chakra-ui/react";
 
+const API_URL = "https://your-api-url.com/api";
+
 const CreatePromptModal = ({ isOpen, onClose, onSubmit }) => {
   const [name, setName] = useState("");
   const [prompt, setPrompt] = useState("");
 
-  const handleSubmit = () => {
-    onSubmit({ name, prompt });
+  const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_URL}/prompts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ data: { name, prompt } }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      onSubmit(data.data);
+    }
     onClose();
   };
 
